@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title>DEMO</title>
+	<style>
+		.axis path,
+		.axis line{
+			fill:none;<!--绘制路径-->
+			stroke:black;<!--边框路径-->
+		    shape-rendering:crispEdges;
+		}
+		.axis text{
+		    font-family: sans-serif;
+		    font-size: 11px;
+			}
+	</style>
+</head>
+	<body>
+	<script src="./d3.v4.js"></script>
+	<script>
+		//坐标系上的数据输入
+		var center = [
+		[0.1,0.3],[0.2,0.5],[0.3,0.5],[0.4,0.4],[0.5,0.1],[0.6,0.7],[0.7,0.4],[0.8,0.7],[0.9,0.5],[1.0,0.9]
+		];
+		//窗口被显示的大小
+		var width  = 500;
+		var height = 500;
+		var svg = d3.select("body")
+			.append("svg")
+		    .attr("width", width)
+		    .attr("height", height);
+		var xAxisWidth = 300;//坐标轴x的长度
+		var yAxisWidth = 300;//坐标轴y的长度
+		var xScale = d3.scaleLinear()
+		    .domain([0, 1.1 * d3.max(center,function(d){ return d[0];})])
+		    .range([0,xAxisWidth]);
+		var yScale = d3.scaleLinear()
+		    .domain([0, 1.1 * d3.max(center,function(d){ return d[1];})])
+		    .range([yAxisWidth,0]);//保证y轴坐标刻度是从上到下减小的
+		var padding = {top: 0, right: 0, bottom: 150, left: 100};
+		var xAxis = d3.axisBottom()
+			.scale(xScale)
+			.ticks(5);//x坐标轴上的1被多少除
+		var yAxis = d3.axisLeft()
+			.scale(yScale)
+			.ticks(5);//y坐标轴上的1被多少除
+		svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(" + padding.left + "," + (height - padding.bottom) + ")")//变换x轴的位置
+			.call(xAxis);
+		svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(" + padding.left + "," + (height - padding.bottom - yAxisWidth) + ")")//-yAxisWidth可以使坐标轴反转方向
+			.call(yAxis);
+		var g = svg.selectAll(".axis")
+		g.append("text")
+		      .attr("transform","translate(" + 10 + "," + -50 + ")")
+		      .attr("dy", "100")
+		      .text(function(d) { return 11111 });
+		//绘制矩形
+		var update = svg.selectAll("rect")
+			.data(center)
+		enter = update.enter()
+			.append("rect")
+			.attr("fill","#637fb6")
+			.attr("width", function(d){
+				return 24;
+			})
+			.attr("height", function(d){
+				return height - yScale(d[1]) - 200;
+			})
+			.attr("x", function(d){
+				return padding.left + xScale(d[0]) - 12;
+			})
+			.attr("y", function(d){
+				return height - padding.bottom - yAxisWidth + yScale(d[1]);
+			})
+			.on("mouseover", function(d,i){
+				console.log(d)
+				console.log(i);
+				d3.select(this).attr("fill","#3c4db2")
+				svg.append("text").attr("x",padding.left + xScale(d[0]) - 12)
+					.attr("y",height - padding.bottom - yAxisWidth + yScale(d[1]))
+					.attr("id","tip")
+					.text(d[1]);
+			})
+			.on("mouseout", function(){
+				svg.select("#tip").remove()
+				d3.select(this).attr("fill","#637fb6")
+			})
+	</script>
+</body>
+</html>
