@@ -1,2 +1,2 @@
 # d3学习记录
-1.条形图
+*[条形图](https://github.com/tangxim/d3-learning/blob/master/bar_chart.html "悬停显示")
