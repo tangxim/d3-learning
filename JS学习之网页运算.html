@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>学生学号及姓名</title>
+		<script>
+			function f1(){
+				var tname = document.getElementById("tname").value;
+				var count = 0;
+				var x1 = document.getElementById('t1').value;
+				var y1 = document.getElementById('t2').value;
+				var t3 = document.getElementById('t3').value;
+				if (parseInt(t3)==parseInt(x1) + parseInt(y1))
+				{count = count + 25;}
+				
+				var x2 = document.getElementById('t4').value;
+				var y2 = document.getElementById('t5').value;
+				var t6 = document.getElementById('t6').value;
+				if (parseInt(t6)==parseInt(x2) - parseInt(y2))
+				{count = count + 25;}
+				
+				var x3 = document.getElementById('t7').value;
+				var y3 = document.getElementById('t8').value;
+				var t9 = document.getElementById('t9').value;
+				if (parseInt(t9)==parseInt(x3) * parseInt(y3))
+				{count = count + 25;}
+				
+				var x4 = document.getElementById('t10').value;
+				var y4 = document.getElementById('t11').value;
+				var t12 = document.getElementById('t12').value;
+				if (parseInt(t12)==parseInt(x4) / parseInt(y4))
+				{count = count + 25;}
+				document.getElementById('count').innerHTML = "姓名:" + tname +"    " +"分数:"+ count;
+			}
+		</script>
+	</head>
+	<body align = "center">
+		<p>
+			请在此输入您的姓名：
+			<input name="tname" type="text" id="tname" value="姓名"/>
+		</p>
+		<p>请在下面的文本框内输入您的答案：</p>
+		<p>
+			<input type="text" id ='t1' value="97">
+				+
+				<input type="text" id="t2">
+					=
+					<input type="text"  id="t3" value="134"/>
+		</p>
+		<p>
+			<input type="text" id ="t4" value="200"/>
+			-
+			<input type="text" id="t5"/>
+			=
+			<input type="text" id="t6" value="137" />
+		</p>
+		<p>
+			<input type="text" id="t7" value="32" />
+			×
+			<input type="text" id="t8"/>
+			=
+			<input type="text" id="t9" value="128"/>
+		</p>
+		<p>
+			<input type="text" id="t10" value="125" />
+			÷
+			<input type="text" id="t11"/>
+			=
+			<input type="text" id="t12" value="25"/>
+		</p>
+		<p align="center">
+			<input type="button" onclick="f1()" value="提交答案"/>
+		</p>
+		<p id="count">
+			
+		</p>
+		<script language="JavaScript">
+			f1();
+		</script>
+	</body>
+</html>
