@@ -5,20 +5,20 @@
   </head>   
   
 <style>  
-.tooltip{
-	font-family: simsun;
-	font-size: 14px;
-	width: 120;
-	height: auto;
-	position: absolute;
-	text-align: center;
-	border-style: solid;
-	border-width: 1px;
-	background-color: white;
-	border-radius: 5px;
-}
+  .tooltip{
+	 font-family: simsun;
+	 font-size: 14px;
+	 width: 120;
+	 height: auto;
+	 position: absolute;
+	 text-align: center;
+     border-style: solid; 
+	 border-width: 1px;
+	 background-color: white;
+	 border-radius: 5px;
+  }
+  
 </style>  
-
     <body>    
         <script src="d3.js" charset="utf-8"></script>    
         <script>  
@@ -36,7 +36,7 @@
         var pie = d3.layout.pie()
                            .value(function(d){
                             return d.flow;
-                           })
+                           });
           
         var outerRadius = width / 2;  
         var innerRadius = width / 2.1;  
@@ -51,33 +51,41 @@
                       .enter()  
                       .append("g")  
                       .attr("transform","translate("+(100+outerRadius)+","+outerRadius+")");  
-     
+                        
         arcs.append("path")  
-            .attr("fill",function(d,i){
+            .attr("fill",function(d,i){  
                 return color(i);  
             })  
             .attr("d",function(d){  
                 return arc(d);  
-            });  
-
-        var tooltip = d3.select("body")
-                  .append("div")
-                  .attr("class","tooltip")
-                  .style("opacity",0.0);
-
-        arcs.on("mouseover",function(d){
-            tooltip.html("源端口：" + d.source + "<br />" + "目的端口：" + d.target)
-              .style("left", (d3.event.pageX) + "px")
-              .style("top", (d3.event.pageY + 20) + "px")
-              .style("opacity",1.0);
-            })
-            .on("mousemove",function(d){
-              tooltip.style("left", (d3.event.pageX) + "px")
-                  .style("top", (d3.event.pageY + 20) + "px");
-            })
-            .on("mouseout",function(d){
-                tooltip.style("opacity",0.0); 
             });
-      </script>
-    </body>
-</html>
+            
+        var tooltip = d3.select("body")
+									.append("div")
+									.attr("class","tooltip")
+									.style("opacity",0.0);
+				
+				arcs.on("mouseover",function(d){
+					
+					///下面一行不对
+						tooltip.html("源端口：" + d3.values(dataset,function(d){return d.source;}) + "<br />" + "目的端口：" + d.data[0] + "<br />" + "数据量：" + d.data[0])
+							.style("left", (d3.event.pageX) + "px")
+							.style("top", (d3.event.pageY + 20) + "px")
+							.style("opacity",1.0);
+						})
+						.on("mousemove",function(d){
+							tooltip.style("left", (d3.event.pageX) + "px")
+									.style("top", (d3.event.pageY + 20) + "px");
+						})
+						.on("mouseout",function(d){
+						    tooltip.style("opacity",0.0); 
+						});
+          
+        /*console.log(dataset);  
+        console.log(pie(dataset));  */
+         })
+            
+        </script>    
+          
+    </body>    
+</html>   
