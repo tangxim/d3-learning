@@ -1,3 +1,4 @@
+//目前的提示框中数据量能显示，但是源端口和目的端口无法正确显示。
 <html>    
   <head>    
         <meta charset="utf-8">    
@@ -25,18 +26,26 @@
           
         var width =710;  
         var height = 710;   
+        
+        var source=[];
+				var target=[];
+				
         d3.csv("flow.csv",function(error,dataset){
                 console.log(dataset);
-           
-        
+                for(var i = 0; i < dataset.length; i++){
+                	source.push(dataset[i].source);
+                	target.push(dataset[i].target);
+                }
+
         var svg = d3.select("body").append("svg")  
                                 .attr("width",width+800)  
                                 .attr("height",height);  
-          
+
         var pie = d3.layout.pie()
                            .value(function(d){
                             return d.flow;
                            });
+				
           
         var outerRadius = width / 2;  
         var innerRadius = width / 2.1;  
@@ -49,7 +58,7 @@
         var arcs = svg.selectAll("g")  
                       .data(pie(dataset))  
                       .enter()  
-                      .append("g")  
+                      .append("g")
                       .attr("transform","translate("+(100+outerRadius)+","+outerRadius+")");  
                         
         arcs.append("path")  
@@ -66,21 +75,21 @@
 									.style("opacity",0.0);
 				
 				arcs.on("mouseover",function(d){
-					
-					///下面一行不对
-						tooltip.html("源端口：" + d3.values(dataset,function(d){return d.source;}) + "<br />" + "目的端口：" + d.data[0] + "<br />" + "数据量：" + d.data[0])
-							.style("left", (d3.event.pageX) + "px")
-							.style("top", (d3.event.pageY + 20) + "px")
-							.style("opacity",1.0);
-						})
-						.on("mousemove",function(d){
-							tooltip.style("left", (d3.event.pageX) + "px")
-									.style("top", (d3.event.pageY + 20) + "px");
-						})
-						.on("mouseout",function(d){
-						    tooltip.style("opacity",0.0); 
-						});
-          
+
+				///就是这一行
+				tooltip.html("源端口：" + Number(source) + "<br />" + "目的端口：" + d3.sum(dataset,function(d){return d.target;}) + "<br />" + "数据量：" + Number(d.value))
+					.style("left", (d3.event.pageX) + "px")
+					.style("top", (d3.event.pageY + 20) + "px")
+					.style("opacity",1.0);
+				})
+				.on("mousemove",function(d){
+					tooltip.style("left", (d3.event.pageX) + "px")
+							.style("top", (d3.event.pageY + 20) + "px");
+				})
+				.on("mouseout",function(d){
+				    tooltip.style("opacity",0.0); 
+				});
+
         /*console.log(dataset);  
         console.log(pie(dataset));  */
          })
