@@ -1,4 +1,5 @@
-//目前的提示框中数据量能显示，但是源端口和目的端口无法正确显示。
+//4/27更新：提示框已完善。
+
 <html>    
   <head>    
         <meta charset="utf-8">    
@@ -26,16 +27,9 @@
           
         var width =710;  
         var height = 710;   
-        
-        var source=[];
-				var target=[];
 				
         d3.csv("flow.csv",function(error,dataset){
                 console.log(dataset);
-                for(var i = 0; i < dataset.length; i++){
-                	source.push(dataset[i].source);
-                	target.push(dataset[i].target);
-                }
 
         var svg = d3.select("body").append("svg")  
                                 .attr("width",width+800)  
@@ -45,7 +39,6 @@
                            .value(function(d){
                             return d.flow;
                            });
-				
           
         var outerRadius = width / 2;  
         var innerRadius = width / 2.1;  
@@ -68,16 +61,15 @@
             .attr("d",function(d){  
                 return arc(d);  
             });
-            
+
         var tooltip = d3.select("body")
 									.append("div")
 									.attr("class","tooltip")
 									.style("opacity",0.0);
 				
 				arcs.on("mouseover",function(d){
-
-				///就是这一行
-				tooltip.html("源端口：" + Number(source) + "<br />" + "目的端口：" + d3.sum(dataset,function(d){return d.target;}) + "<br />" + "数据量：" + Number(d.value))
+					console.log(d);
+				tooltip.html("源端口：" + d.data.source + "<br />" + "目的端口：" + d.data.target + "<br />" + "数据量：" + Number(d.value))
 					.style("left", (d3.event.pageX) + "px")
 					.style("top", (d3.event.pageY + 20) + "px")
 					.style("opacity",1.0);
@@ -89,9 +81,7 @@
 				.on("mouseout",function(d){
 				    tooltip.style("opacity",0.0); 
 				});
-
-        /*console.log(dataset);  
-        console.log(pie(dataset));  */
+				
          })
             
         </script>    
