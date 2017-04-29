@@ -84,6 +84,31 @@
 				
          })
             
+		
+		
+		
+					//动画
+				arcs.select("path").on("mouseover",function(d,i){  
+                    d3.select(this).transition()  
+                        .duration(500)  
+                        .ease("linear")  
+                        .attr("transform", function(d, i) {  
+                            var midAngle = (d.startAngle + d.endAngle) / 2;  
+                            return "translate(" + (20 * Math.sin(midAngle)) + "," + (-20 * Math.cos(midAngle)) + ")";  
+                        })  
+                })  
+                .on("mouseout",function(d,i){  
+                    d3.select(this).transition()  
+                        .duration(500)  
+                        .ease("linear")  
+                        .attr("transform", function(d, i) {  
+                            var midAngle=(d.startAngle+d.endAngle)/2;  
+                    return "translate("+(1*Math.sin(midAngle))+","+(-1*Math.cos(midAngle))+")";  
+                            return "translate(0)";  
+                        })  
+                }) 
+				
+         })
         </script>    
           
     </body>    
